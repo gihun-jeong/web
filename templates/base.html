@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}My Dashboard{% endblock %}</title>
+    <!-- 공통 스타일시트 및 사이드바 JS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
     <script src="{{ url_for('static', filename='js/sidebar.js') }}" defer></script>
@@ -10,9 +11,10 @@
 <body>
     {% include 'sidebar.html' %}
 
-    <!-- Loading Spinner -->
+    <!-- 로딩 스피너 (AJAX 로딩 시 표시) -->
     <div id="loader" class="loader hidden"></div>
 
+    <!-- 실제 페이지 내용 영역 -->
     <div id="content" class="content">
         {% block content %}{% endblock %}
     </div>

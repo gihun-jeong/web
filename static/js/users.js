@@ -1,4 +1,5 @@
 (function() {
+  // 사용자 관리 테이블 및 버튼 등 DOM 요소 가져오기
   const table = document.getElementById('users-table');
   const selectAll = document.getElementById('select-all');
   const addBtn = document.getElementById('add-btn');
@@ -16,15 +17,15 @@
   const addEmail = document.getElementById('add-email');
   const createBtn = document.getElementById('create-btn');
   const cancelAdd = document.getElementById('cancel-add-btn');
-  let selectedId = null;
+  let selectedId = null; // 선택된 사용자 id
 
-  // 버튼 활성화/비활성화 토글
+  // 버튼 활성화/비활성화 토글 함수
   function toggleButtons() {
     const checks = table.querySelectorAll('tbody .row-check');
     const checked = table.querySelectorAll('tbody .row-check:checked');
     selectAll.checked = (checked.length === checks.length && checks.length > 0);
-    editBtn.disabled = (checked.length !== 1);
-    deleteBtn.disabled = (checked.length < 1);
+    editBtn.disabled = (checked.length !== 1); // 1개만 선택 시 수정 가능
+    deleteBtn.disabled = (checked.length < 1); // 1개 이상 선택 시 삭제 가능
     selectedId = checked.length === 1 ? checked[0].closest('tr').dataset.id : null;
   }
 
@@ -35,14 +36,14 @@
     toggleButtons();
   });
 
-  // 개별 체크박스 이벤트 (이벤트 위임 사용 가능)
+  // 개별 체크박스 이벤트 (이벤트 위임)
   table.addEventListener('change', (e) => {
     if (e.target.classList.contains('row-check')) {
       toggleButtons();
     }
   });
 
-  // 추가 버튼 클릭 -> 추가 모달 표시
+  // 추가 버튼 클릭 시 추가 모달 표시
   addBtn.addEventListener('click', () => {
     addName.value = '';
     addPhone.value = '';
@@ -50,7 +51,7 @@
     addModal.classList.remove('hidden');
   });
 
-  // 생성 버튼 클릭 -> 서버에 사용자 추가 요청
+  // 생성 버튼 클릭 시 서버에 사용자 추가 요청 (AJAX)
   createBtn.addEventListener('click', () => {
     fetch('/users/create', {
       method: 'POST',
@@ -64,17 +65,17 @@
     .then(res => res.json())
     .then(data => {
       if (data.success) {
-        location.reload();
+        location.reload(); // 성공 시 새로고침(실제 서비스에서는 DOM만 갱신 권장)
       }
     });
   });
 
-  // 추가 모달 취소
+  // 추가 모달 취소 버튼
   cancelAdd.addEventListener('click', () => {
     addModal.classList.add('hidden');
   });
 
-  // 수정 버튼 클릭 -> 수정 모달 표시
+  // 수정 버튼 클릭 시 수정 모달 표시
   editBtn.addEventListener('click', () => {
     if (!selectedId) return;
     const row = document.querySelector(`tr[data-id="${selectedId}"]`);
@@ -84,7 +85,7 @@
     editModal.classList.remove('hidden');
   });
 
-  // 저장 버튼 클릭 -> 서버에 사용자 정보 업데이트 요청
+  // 저장 버튼 클릭 시 서버에 사용자 정보 업데이트 요청 (AJAX)
   saveBtn.addEventListener('click', () => {
     if (!selectedId) return;
     fetch('/users/update', {
@@ -100,22 +101,23 @@
     .then(res => res.json())
     .then(data => {
       if (data.success) {
-        location.reload();
+        location.reload(); // 성공 시 새로고침(실제 서비스에서는 DOM만 갱신 권장)
       }
     });
   });
 
-  // 수정 모달 취소
+  // 수정 모달 취소 버튼
   cancelBtn.addEventListener('click', () => {
     editModal.classList.add('hidden');
   });
 
-  // 삭제 버튼 클릭 -> 선택된 모든 사용자 삭제 요청
-  deleteBtn.addEventListener('click', () => {
+  // 삭제 버튼 클릭 시 선택된 사용자 모두 삭제 요청 (AJAX)
+  deleteBtn.addEventListener('click', function(e) {
+    e.preventDefault(); // 폼 제출/새로고침 방지
     const toDelete = Array.from(table.querySelectorAll('tbody .row-check:checked'))
       .map(cb => cb.closest('tr').dataset.id);
     if (toDelete.length === 0) return;
-    // 여러 삭제 요청 순차 처리
+    // 여러 삭제 요청을 순차적으로 처리
     Promise.all(toDelete.map(id =>
       fetch('/users/delete', {
         method: 'POST',
@@ -123,10 +125,10 @@
         body: JSON.stringify({ id: id })
       }).then(res => res.json())
     )).then(results => {
-      location.reload();
+      location.reload(); // 성공 시 새로고침(실제 서비스에서는 DOM만 갱신 권장)
     });
   });
 
-  // 초기 버튼 상태 토글
+  // 페이지 로드시 버튼 상태 초기화
   toggleButtons();
 })();

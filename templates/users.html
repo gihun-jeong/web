@@ -1,10 +1,13 @@
 {% extends 'base.html' %}
 {% block title %}사용자 관리{% endblock %}
 {% block content %}
+<!-- 사용자 관리 페이지 -->
 <h1>사용자 관리</h1>
+<!-- 사용자 추가/수정/삭제 버튼 -->
 <button id="add-btn">추가</button>
 <button id="edit-btn" disabled>수정</button>
 <button id="delete-btn" disabled>삭제</button>
+<!-- 사용자 목록 테이블 -->
 <table id="users-table">
   <thead>
     <tr>
@@ -26,7 +29,7 @@
   </tbody>
 </table>
 
-<!-- 편집 팝업 -->
+<!-- 사용자 정보 수정 모달 -->
 <div id="edit-modal" class="modal hidden">
   <div class="modal-content">
     <h2>사용자 정보 수정</h2>
@@ -38,7 +41,7 @@
   </div>
 </div>
 
-<!-- 추가 팝업 -->
+<!-- 사용자 추가 모달 -->
 <div id="add-modal" class="modal hidden">
   <div class="modal-content">
     <h2>사용자 추가</h2>
@@ -50,5 +53,6 @@
   </div>
 </div>
 
+<!-- 사용자 관리용 JS 파일 -->
 <script src="{{ url_for('static', filename='js/users.js') }}"></script>
 {% endblock %}

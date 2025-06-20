@@ -1,16 +1,19 @@
+/* 전체 페이지 기본 스타일 */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
 }
 .content {
-    margin-left: 200px;
+    margin-left: 200px; /* 사이드바 공간 확보 */
     padding: 1rem;
     transition: margin-left 0.3s ease;
 }
+/* 사이드바 접힘 시 내용 영역 조정 */
 .sidebar.collapsed ~ .content {
     margin-left: 60px;
 }
 
+/* 테이블 스타일 */
 table {
     border-collapse: collapse;
     width: 100%;
@@ -23,6 +26,8 @@ th, td {
 th {
     background-color: #f4f4f4;
 }
+
+/* 로딩 스피너 스타일 */
 .loader {
     position: fixed;
     top: 50%;
@@ -43,12 +48,14 @@ th {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+/* 차트 컨테이너 (반응형) */
 .chart-container {
-    /* 원하는 최대/최소 크기, 반응형 설정 등 추가 가능 */
     max-width: 800px;
-    margin: 0 auto; /* 가운데 정렬 */
+    margin: 0 auto;
 }
-/* 모달 스타일 추가 */
+
+/* 모달(팝업) 스타일 */
 .modal {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -65,4 +72,37 @@ th {
   padding: 1rem;
   border-radius: 4px;
   width: 300px;
+}
+
+/* 카드(영역 분리) 컴포넌트 스타일 */
+.card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  transition: box-shadow 0.2s;
+}
+.card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.card-title {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+.card-subtitle {
+  margin: 0;
+  color: #888;
+  font-size: 1rem;
+}
+.card-actions > * {
+  margin-left: 0.5rem;
 }

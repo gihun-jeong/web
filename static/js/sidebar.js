@@ -1,17 +1,17 @@
-// sidebar.js: handles sidebar toggle and AJAX page loading without refreshing the sidebar
+// sidebar.js: 사이드바 토글 및 AJAX 페이지 로딩(사이드바는 그대로 유지)
 
 document.addEventListener('DOMContentLoaded', () => {
   const sidebar = document.getElementById('sidebar');
   const toggleBtn = document.getElementById('toggle-btn');
   let isAnimating = false;
-  const loader = document.getElementById('loader'); // optional loader element
+  const loader = document.getElementById('loader'); // 로딩 스피너
 
-  // Restore collapsed state on load
+  // 페이지 로드시 사이드바 접힘/펼침 상태 복원(localStorage 사용)
   if (localStorage.getItem('sidebarCollapsed') === 'true') {
     sidebar.classList.add('collapsed');
   }
 
-  // Toggle button click: expand/collapse sidebar
+  // 토글 버튼 클릭 시 사이드바 접힘/펼침
   toggleBtn.addEventListener('click', (e) => {
     e.preventDefault();
     if (isAnimating) return;
@@ -20,16 +20,16 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
   });
 
-  // After transition ends, allow next toggle
+  // 애니메이션 끝나면 다음 토글 허용
   sidebar.addEventListener('transitionend', (e) => {
     if (e.propertyName === 'width') {
       isAnimating = false;
     }
   });
 
-  // AJAX-based content loading (sidebar remains intact)
+  // AJAX로 페이지 내용만 교체(사이드바는 그대로)
   function loadPage(url) {
-    // show loader if exists
+    // 로딩 스피너 표시
     if (loader) loader.classList.remove('hidden');
 
     fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
           document.title = doc.title;
           window.history.pushState(null, '', url);
 
-          // Execute only chart scripts (skip sidebar.js)
+          // 차트 등 필요한 script만 실행(사이드바 관련 js는 제외)
           newContent.querySelectorAll('script').forEach((oldScript) => {
             if (oldScript.src && oldScript.src.includes('sidebar.js')) return;
             const script = document.createElement('script');
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
 
-  // Attach click handlers to menu links
+  // 메뉴 링크 클릭 시 AJAX로 페이지 로딩
   document.querySelectorAll('.menu-list a').forEach((link) => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Handle back/forward navigation
+  // 브라우저 뒤로가기/앞으로가기 시에도 AJAX로 페이지 로딩
   window.addEventListener('popstate', () => {
     loadPage(window.location.pathname);
   });
