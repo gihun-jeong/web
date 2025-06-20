@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}사용자 관리{% endblock %}
+{% block content %}
+<h1>사용자 관리</h1>
+<button id="add-btn">추가</button>
+<button id="edit-btn" disabled>수정</button>
+<button id="delete-btn" disabled>삭제</button>
+<table id="users-table">
+  <thead>
+    <tr>
+      <th><input type="checkbox" id="select-all"></th>
+      <th>이름</th>
+      <th>전화번호</th>
+      <th>이메일</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for u in users %}
+    <tr data-id="{{ u.id }}">
+      <td><input type="checkbox" class="row-check"></td>
+      <td class="cell-name">{{ u.name }}</td>
+      <td class="cell-phone">{{ u.phone }}</td>
+      <td class="cell-email">{{ u.email }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- 편집 팝업 -->
+<div id="edit-modal" class="modal hidden">
+  <div class="modal-content">
+    <h2>사용자 정보 수정</h2>
+    <label>이름: <input type="text" id="edit-name"></label><br>
+    <label>전화번호: <input type="text" id="edit-phone"></label><br>
+    <label>이메일: <input type="text" id="edit-email"></label><br>
+    <button id="save-btn">저장</button>
+    <button id="cancel-btn">취소</button>
+  </div>
+</div>
+
+<!-- 추가 팝업 -->
+<div id="add-modal" class="modal hidden">
+  <div class="modal-content">
+    <h2>사용자 추가</h2>
+    <label>이름: <input type="text" id="add-name"></label><br>
+    <label>전화번호: <input type="text" id="add-phone"></label><br>
+    <label>이메일: <input type="text" id="add-email"></label><br>
+    <button id="create-btn">생성</button>
+    <button id="cancel-add-btn">취소</button>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/users.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Sensor Readings{% endblock %}
+{% block content %}
+  <h1>Sensor Readings</h1>
+  {{ sensor_div|safe }}
+    <h2>Data Table</h2>
+        <table>
+                <thead>
+                    <tr>{% for c in columns %}<th>{{ c }}</th>{% endfor %}</tr>
+                </thead>
+            <tbody>
+                {% for row in table %}
+                    <tr>{% for c in columns %}<td>{{ row[c] }}</td>{% endfor %}</tr>
+                {% endfor %}
+            </tbody>
+        </table>
+{% endblock %}

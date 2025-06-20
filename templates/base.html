@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}My Dashboard{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+    <script src="{{ url_for('static', filename='js/sidebar.js') }}" defer></script>
+</head>
+<body>
+    {% include 'sidebar.html' %}
+
+    <!-- Loading Spinner -->
+    <div id="loader" class="loader hidden"></div>
+
+    <div id="content" class="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
